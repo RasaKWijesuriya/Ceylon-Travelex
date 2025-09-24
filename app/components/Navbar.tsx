@@ -30,9 +30,9 @@ export default function Navbar() {
       }
     >
       <div className="mx-auto max-w-7xl px-4">
-        {/* Brand LEFT, Links + CTA RIGHT */}
+       
         <div className="flex h-[76px] items-center">
-          {/* Left: brand */}
+         
           <Link
             href="/"
             className="font-display text-xl tracking-wide drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
@@ -40,7 +40,7 @@ export default function Navbar() {
             Ceylon Travelex
           </Link>
 
-          {/* Right cluster */}
+        
           <div className="ml-auto flex items-center gap-8">
             <nav className="hidden md:flex items-center gap-8">
               {links.map((l) => (

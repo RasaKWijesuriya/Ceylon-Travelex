@@ -1,4 +1,3 @@
-// app/components/TestimonialsSection.tsx
 import { Star } from "lucide-react";
 
 export type TestimonialItem = {
@@ -7,13 +6,13 @@ export type TestimonialItem = {
   author: string;
   city?: string | null;
   country?: string | null;
-  rating?: number | null; // default to 5 if missing
+  rating?: number | null; 
 };
 
 export default function TestimonialsSection({
   items = [],
 }: { items?: TestimonialItem[] }) {
-  // Fallback content if API not available (optional)
+  
   const fallback: TestimonialItem[] = [
     {
       id: 1,

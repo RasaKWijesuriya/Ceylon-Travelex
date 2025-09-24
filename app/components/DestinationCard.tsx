@@ -22,17 +22,16 @@ function formatPrice(n: number) {
 function resolveImageSrc(u?: string | null) {
   const s = (u ?? "").trim();
 
-  // nothing in DB -> fallback
+ 
   if (!s) return PLACEHOLDER;
 
-  // full remote URL
+
   if (/^https?:\/\//i.test(s)) return s;
 
-  // already a public path (must start with '/')
+  
   if (s.startsWith("/")) return s;
 
-  // treat as filename from our public folder
-  // IMPORTANT: forward slashes only
+  
   return LOCAL_BASE + s;
 }
 
@@ -47,7 +46,7 @@ export default function DestinationCard({ d }: { d: Destination }) {
       {/* Image */}
       <div className="relative">
         <Image
-          src={imgSrc}                                 // ← use the resolved src
+          src={imgSrc}                               
           alt={d.name}
           width={1200}
           height={800}

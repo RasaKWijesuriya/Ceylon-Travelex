@@ -1,11 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @import "tailwindcss";
 
-/* your custom CSS below */
 :root { --header-h: 72px; }
 html, body { height: 100%; }
-/* DEV ONLY: hide Next.js dev indicators / error toasts */
 nextjs-portal { display: none !important; }

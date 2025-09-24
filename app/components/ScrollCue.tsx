@@ -10,16 +10,16 @@ export default function ScrollCue({ className = "" }: Props) {
       href="#destinations"
       aria-label="Scroll down"
       className={[
-        // keep it below CTAs and non-clickable
+        
         "pointer-events-none absolute z-0 left-1/2 -translate-x-1/2",
-        // sit a bit higher as viewport changes; more space on larger screens
+        
         "bottom-[3vh] sm:bottom-[4vh] md:bottom-[5vh] lg:bottom-[6vh]",
         className,
       ].join(" ")}
     >
       <motion.div
         aria-hidden
-        animate={{ y: [0, 6, 0] }}               // smaller bounce
+        animate={{ y: [0, 6, 0] }}               
         transition={{ duration: 1.8, ease: "easeInOut", repeat: Infinity }}
         className="
           relative h-10 w-6 rounded-full

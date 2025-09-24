@@ -33,7 +33,7 @@ export default function Membership() {
       aria-labelledby="membership-title"
     >
       <div className="mx-auto max-w-6xl px-4 text-center">
-        {/* small label with lines */}
+       
         <div className="mb-6 flex items-center justify-center gap-3 text-xs tracking-[0.25em] text-amber-400">
           <span className="h-px w-10 bg-amber-400/50" />
           <span>MEMBERSHIP</span>
@@ -55,7 +55,7 @@ export default function Membership() {
               key={title}
               className="mx-auto max-w-[18rem] text-center"
             >
-              {/* icon in gold ring */}
+              
               <div className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-full border-2 border-amber-400/70 bg-amber-400/[0.07] shadow-[0_0_0_2px_rgba(0,0,0,0.35)]">
                 <Icon className="h-7 w-7 text-amber-400" strokeWidth={1.8} />
               </div>
@@ -67,7 +67,7 @@ export default function Membership() {
         </div>
       </div>
 
-      {/* subtle top/bottom fade so it blends with dark bg */}
+      
       <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black to-transparent" />
     </section>

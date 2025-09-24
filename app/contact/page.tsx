@@ -38,7 +38,6 @@ export default function ContactPage() {
         <input name="travel_date" type="date" placeholder="Travel date (optional)" />
         <input name="party_size" type="number" min={1} placeholder="Party size (optional)" />
         <textarea name="message" placeholder="Tell us about your trip" required minLength={10} rows={5} />
-        {/* honeypot (hide in CSS in real UI) */}
         <input name="company" tabIndex={-1} autoComplete="off" style={{ display: "none" }} />
         <button disabled={status === "sending"}>
           {status === "sending" ? "Sending…" : "Submit enquiry"}

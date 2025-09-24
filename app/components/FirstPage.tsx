@@ -18,15 +18,14 @@ export default function FirstPage() {
         className="object-cover"
       />
 
-      {/* Darker vignette/overlay to match ref */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-black/85" />
-      {/* soft vignette on edges */}
+      
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,transparent_55%,rgba(0,0,0,0.35)_100%)]" />
 
-      {/* Content container (add big bottom padding so CTAs don’t hit the cue) */}
+     
       <div className="relative z-10 mx-auto max-w-7xl px-4 pt-[76px] pb-28 md:pb-36 lg:pb-44">
         <div className="mx-auto max-w-4xl text-center pt-10 md:pt-14">
-          {/* pill */}
+         
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
@@ -46,7 +45,6 @@ export default function FirstPage() {
             Where Luxury Meets <span className="text-amber-400">Longitude</span>
           </motion.h1>
 
-          {/* subcopy */}
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -57,7 +55,6 @@ export default function FirstPage() {
             discreet, and tailored to your taste.
           </motion.p>
 
-          {/* buttons (centered) */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -80,11 +77,8 @@ export default function FirstPage() {
         </div>
       </div>
 
-      {/* scroll cue (stays below CTAs; position handled inside component) */}
+     
       <ScrollCue className="md:bottom-[clamp(20px,6dvh,64px)]" />
-
-      {/* If you want to push it even lower/raise it, you can override:
-          <ScrollCue className="bottom-[4vh] md:bottom-[6vh]" /> */}
     </section>
   );
 }

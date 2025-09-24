@@ -8,7 +8,7 @@ type FormState = {
   email: string;
   destination: string;
   notes: string;
-  // honeypot
+  
   website?: string;
 };
 

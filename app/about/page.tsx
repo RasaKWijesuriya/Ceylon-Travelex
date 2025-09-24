@@ -1,4 +1,3 @@
-// app/about/page.tsx
 import Image from "next/image";
 
 export const metadata = {
@@ -28,9 +27,7 @@ function CheckIcon(props: React.SVGProps<SVGSVGElement>) {
 export default function AboutPage() {
   return (
     <main className="relative">
-      {/* top padding to clear navbar */}
       <div className="mx-auto max-w-7xl px-4 pt-[84px] pb-24">
-        {/* Pill + Title */}
         <div className="text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] tracking-[0.18em] uppercase text-amber-400">
             Our Story
@@ -41,11 +38,8 @@ export default function AboutPage() {
           </h1>
         </div>
 
-        {/* Main Content */}
         <div className="mt-10 grid items-start gap-10 md:mt-14 md:grid-cols-12">
-          {/* Left column */}
           <section className="md:col-span-6 lg:col-span-7">
-            {/* small label */}
             <div className="mb-4 text-[11px] font-semibold tracking-[0.18em] text-amber-400">
               BESPOKE JOURNEYS
             </div>
@@ -70,8 +64,6 @@ export default function AboutPage() {
             </div>
 
             <div className="my-8 h-px w-full bg-white/10" />
-
-            {/* What sets us apart */}
             <h3 className="mb-4 font-display text-xl text-white">
               What Sets Us Apart
             </h3>
@@ -119,13 +111,9 @@ export default function AboutPage() {
               </li>
             </ul>
           </section>
-
-          {/* Right column */}
           <aside className="md:col-span-6 lg:col-span-5">
             <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5 shadow-lg">
               <div className="relative aspect-[4/5] w-full">
-                {/* Use any local image you’ve placed in /public.
-                   Options you already have: /galle-fort.jpg /ella-bridge.jpg /hero-sigiriya.jpg */}
                 <Image
                   src="/hero-sigiriya.jpg"
                   alt="Tea-country sunrise—quiet mornings and misty valleys."
