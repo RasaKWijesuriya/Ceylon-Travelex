@@ -1,14 +1,19 @@
-import mysql from "mysql2/promise";
+import mysql, { Pool } from "mysql2/promise";
 
-let pool: mysql.Pool;
+let _pool: Pool | null = null;
 
 export function getPool() {
-  if (!pool) {
-    pool = mysql.createPool({
-      uri: process.env.DATABASE_URL,
+  if (!_pool) {
+    _pool = mysql.createPool({
+      host: process.env.DB_HOST!,
+      user: process.env.DB_USER!,
+      password: process.env.DB_PASSWORD!,
+      database: process.env.DB_NAME!,
+      port: Number(process.env.DB_PORT || 3306),
+      waitForConnections: true,
       connectionLimit: 5,
-      // ssl: { rejectUnauthorized: true } // uncomment if your provider requires SSL
+      queueLimit: 0,
     });
   }
-  return pool;
+  return _pool;
 }
