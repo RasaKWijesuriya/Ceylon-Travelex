@@ -1,33 +1,34 @@
-import { NextResponse } from "next/server";
-import { getPool } from "@/lib/mysql";
-import { idParam } from "@/lib/validators";
+// app/api/destinations/[id]/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { getPool } from '@/lib/mysql';
 
-export async function GET(_req: Request, { params }: { params: { id: string } }) {
-  const id = idParam.parse(params.id);
-  const pool = getPool();
+type Context = { params: { id: string } };
 
-  const [d] = await pool.query(
-    `SELECT id, name, country, region_code, tagline, hero_url,
-            price_from, is_featured, created_at, updated_at
-       FROM destinations WHERE id = ? LIMIT 1`, [id]
-  );
-  const dest = (d as any[])[0];
-  if (!dest) return NextResponse.json({ ok: false, error: "Not found" }, { status: 404 });
+export async function GET(_req: NextRequest, context: Context) {
+  const id = context.params.id;
 
-  const [images] = await pool.query(
-    `SELECT id, url, alt, is_primary, position, created_at
-       FROM destination_images
-      WHERE destination_id = ?
-      ORDER BY is_primary DESC, position ASC, created_at DESC`, [id]
+  const [rows] = await getPool().query(
+    'SELECT * FROM destinations WHERE id = ?',
+    [id]
   );
 
-  const [tags] = await pool.query(
-    `SELECT t.id, t.name
-       FROM destination_tags dt
-       JOIN tags t ON t.id = dt.tag_id
-      WHERE dt.destination_id = ?
-      ORDER BY t.name ASC`, [id]
-  );
+  if (!Array.isArray(rows) || rows.length === 0) {
+    return NextResponse.json({ ok: false, error: 'Not found' }, { status: 404 });
+  }
+  return NextResponse.json({ ok: true, data: rows[0] });
+}
 
-  return NextResponse.json({ ok: true, data: { ...dest, images, tags } });
+// Example for DELETE/PUT too:
+
+export async function DELETE(_req: NextRequest, context: Context) {
+  const id = context.params.id;
+  await getPool().query('DELETE FROM destinations WHERE id = ?', [id]);
+  return NextResponse.json({ ok: true });
+}
+
+export async function PUT(req: NextRequest, context: Context) {
+  const id = context.params.id;
+  const body = await req.json();
+  await getPool().query('UPDATE destinations SET ? WHERE id = ?', [body, id]);
+  return NextResponse.json({ ok: true });
 }
