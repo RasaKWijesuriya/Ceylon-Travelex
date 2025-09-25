@@ -1,19 +1,12 @@
-import mysql, { Pool } from "mysql2/promise";
+// lib/mysql.ts
+import mysql from "mysql2/promise";
 
-let _pool: Pool | null = null;
+let pool: mysql.Pool | null = null;
 
 export function getPool() {
-  if (!_pool) {
-    _pool = mysql.createPool({
-      host: process.env.DB_HOST!,
-      user: process.env.DB_USER!,
-      password: process.env.DB_PASSWORD!,
-      database: process.env.DB_NAME!,
-      port: Number(process.env.DB_PORT || 3306),
-      waitForConnections: true,
-      connectionLimit: 5,
-      queueLimit: 0,
-    });
+  if (!pool) {
+    const url = process.env.DATABASE_URL!;
+    pool = mysql.createPool(url); // MYSQL_PUBLIC_URL works here
   }
-  return _pool;
+  return pool;
 }
