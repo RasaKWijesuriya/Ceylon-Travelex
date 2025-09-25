@@ -1,34 +1,30 @@
 // app/api/destinations/[id]/route.ts
-import { NextRequest, NextResponse } from 'next/server';
-import { getPool } from '@/lib/mysql';
+import { NextRequest, NextResponse } from "next/server";
+import { getPool } from "@/lib/mysql";
 
-type Context = { params: { id: string } };
+// Define the correct shape for the second argument
+type RouteContext = {
+  params: { id: string };
+};
 
-export async function GET(_req: NextRequest, context: Context) {
-  const id = context.params.id;
+export async function GET(_req: NextRequest, { params }: RouteContext) {
+  const { id } = params;
 
-  const [rows] = await getPool().query(
-    'SELECT * FROM destinations WHERE id = ?',
-    [id]
-  );
+  try {
+    const pool = getPool();
+    const [rows] = await pool.query(
+      "SELECT * FROM destinations WHERE id = ?",
+      [id]
+    );
 
-  if (!Array.isArray(rows) || rows.length === 0) {
-    return NextResponse.json({ ok: false, error: 'Not found' }, { status: 404 });
+    // rows may be RowDataPacket[] in mysql2
+    const data = Array.isArray(rows) ? rows[0] : null;
+    if (!data) {
+      return NextResponse.json({ ok: false, error: "Not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ ok: true, data });
+  } catch (err: any) {
+    return NextResponse.json({ ok: false, error: err.message }, { status: 500 });
   }
-  return NextResponse.json({ ok: true, data: rows[0] });
-}
-
-// Example for DELETE/PUT too:
-
-export async function DELETE(_req: NextRequest, context: Context) {
-  const id = context.params.id;
-  await getPool().query('DELETE FROM destinations WHERE id = ?', [id]);
-  return NextResponse.json({ ok: true });
-}
-
-export async function PUT(req: NextRequest, context: Context) {
-  const id = context.params.id;
-  const body = await req.json();
-  await getPool().query('UPDATE destinations SET ? WHERE id = ?', [body, id]);
-  return NextResponse.json({ ok: true });
 }
