@@ -1,33 +1,60 @@
-// app/components/EnquiryForm.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+type Destination = { id: string; name: string };
 
 type FormState = {
-  fullName: string;
+  name: string;
   email: string;
-  destination: string;
-  notes: string;
-  
-  website?: string;
+  destination_id: string | ""; 
+  travel_date?: string;         
+  party_size?: number;         
+  message: string;
+  company?: string;             
 };
 
 export default function EnquiryForm() {
+  const [destinations, setDestinations] = useState<Destination[]>([]);
   const [loading, setLoading] = useState(false);
   const [ok, setOk] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+
   const [form, setForm] = useState<FormState>({
-    fullName: "",
+    name: "",
     email: "",
-    destination: "",
-    notes: "",
-    website: "",
+    destination_id: "",
+    travel_date: "",
+    party_size: undefined,
+    message: "",
+    company: "",
   });
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch("/api/destinations/list");
+        if (!res.ok) throw new Error("Failed to load destinations");
+        const data: Destination[] = await res.json();
+        setDestinations(data);
+      } catch (e: any) {
+        console.error(e);
+        setErr("Could not load destinations.");
+      }
+    })();
+  }, []);
+
   function onChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) {
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((f) => ({
+      ...f,
+      [name]:
+        name === "party_size"
+          ? (value ? Number(value) : undefined)
+          : value,
+    }));
   }
 
   async function onSubmit(e: React.FormEvent) {
@@ -35,29 +62,40 @@ export default function EnquiryForm() {
     setErr(null);
     setOk(false);
 
-    // simple spam block
-    if (form.website) return;
+    if (form.company) return;
 
     setLoading(true);
     try {
+      const payload = {
+        name: form.name,
+        email: form.email,
+        destination_id: form.destination_id || undefined, // undefined -> NULL in DB
+        travel_date: form.travel_date || undefined,        // keep yyyy-mm-dd
+        party_size: form.party_size ?? undefined,
+        message: form.message,
+        company: "", // real users leave this empty
+      };
+
       const res = await fetch("/api/enquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
         const j = await res.json().catch(() => ({}));
-        throw new Error(j?.message || "Failed to submit enquiry");
+        throw new Error(j?.error || "Failed to submit enquiry");
       }
 
       setOk(true);
       setForm({
-        fullName: "",
+        name: "",
         email: "",
-        destination: "",
-        notes: "",
-        website: "",
+        destination_id: "",
+        travel_date: "",
+        party_size: undefined,
+        message: "",
+        company: "",
       });
     } catch (e: any) {
       setErr(e.message || "Something went wrong");
@@ -77,11 +115,10 @@ export default function EnquiryForm() {
             Full Name
           </label>
           <input
-            name="fullName"
-            type="text"
+            name="name"
             className={input}
             placeholder="Enter your full name"
-            value={form.fullName}
+            value={form.name}
             onChange={onChange}
             required
           />
@@ -105,19 +142,50 @@ export default function EnquiryForm() {
 
       <div>
         <label className="mb-2 block text-xs uppercase tracking-wider text-white/70">
-          Preferred Destination
+          Destination
         </label>
-        <input
-          name="destination"
-          type="text"
-          className={input}
-          placeholder="Sri Lanka, Maldives, or your dream destination"
-          value={form.destination}
+        <select
+          name="destination_id"
+          value={form.destination_id}
           onChange={onChange}
-        />
-        <p className="mt-1 text-xs text-white/50">
-          Leave blank if you’d like our curator to suggest destinations
-        </p>
+          className={input}
+        >
+          <option value="">Any destination (let the curator suggest)</option>
+          {destinations.map((d) => (
+            <option key={d.id} value={d.id}>
+              {d.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <div>
+          <label className="mb-2 block text-xs uppercase tracking-wider text-white/70">
+            Travel Date
+          </label>
+          <input
+            name="travel_date"
+            type="date" // yyyy-mm-dd 
+            className={input}
+            value={form.travel_date}
+            onChange={onChange}
+          />
+        </div>
+
+        <div>
+          <label className="mb-2 block text-xs uppercase tracking-wider text-white/70">
+            Party Size
+          </label>
+          <input
+            name="party_size"
+            type="number"
+            min={1}
+            className={input}
+            value={form.party_size ?? ""}
+            onChange={onChange}
+          />
+        </div>
       </div>
 
       <div>
@@ -125,23 +193,24 @@ export default function EnquiryForm() {
           Tell Us About Your Vision
         </label>
         <textarea
-          name="notes"
+          name="message"
           rows={5}
           className={input}
-          placeholder="Share travel preferences, occasions, group size, dates, or specific experiences you’re seeking…"
-          value={form.notes}
+          placeholder="Share travel preferences, group size, dates, or specific experiences you’re seeking…"
+          value={form.message}
           onChange={onChange}
           required
+          minLength={10}
         />
       </div>
 
       {/* honeypot */}
       <input
-        name="website"
+        name="company"
         className="hidden"
-        autoComplete="off"
         tabIndex={-1}
-        value={form.website}
+        autoComplete="off"
+        value={form.company}
         onChange={onChange}
       />
 
@@ -155,21 +224,10 @@ export default function EnquiryForm() {
 
       {ok && (
         <p className="text-center text-sm text-emerald-400">
-          Thank you. Your enquiry has been sent — your curator will reply
-          within 24 hours.
+          Thank you. Your enquiry has been sent — your curator will reply within 24 hours.
         </p>
       )}
-      {err && (
-        <p className="text-center text-sm text-rose-400">
-          {err}
-        </p>
-      )}
-
-      <p className="text-center text-[11px] leading-relaxed text-white/50">
-        By submitting this form, you agree to our privacy policy. Your
-        information will only be used to create your bespoke travel
-        experience.
-      </p>
+      {err && <p className="text-center text-sm text-rose-400">{err}</p>}
     </form>
   );
 }

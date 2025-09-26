@@ -6,3 +6,17 @@
 :root { --header-h: 72px; }
 html, body { height: 100%; }
 nextjs-portal { display: none !important; }
+select {
+  background-color: #0b0b0b;   
+  color: #fff;
+}
+
+select option {
+  background-color: #0b0b0b;
+  color: #fff;
+}
+
+select option:checked {
+  background-color: #fbbf24;   /* amber-400 */
+  color: #111;
+}

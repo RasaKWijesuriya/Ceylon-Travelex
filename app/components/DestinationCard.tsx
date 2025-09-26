@@ -8,12 +8,12 @@ export type Destination = {
   country: string;
   region_code?: string;
   tagline?: string;
-  hero_url: string | null; // allow null from DB
+  hero_url: string | null; 
   price_from: number;
 };
 
 const LOCAL_BASE = "/images/destinations/";
-const PLACEHOLDER = "/images/destinations/placeholder.jpg"; // put a small jpg here
+const PLACEHOLDER = "/images/destinations/placeholder.jpg"; 
 
 function formatPrice(n: number) {
   return `from $${Math.round(n).toLocaleString("en-US")}`;
