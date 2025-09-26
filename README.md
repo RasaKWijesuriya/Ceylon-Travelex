@@ -3,9 +3,9 @@
 A production-ready luxury travel website for Sri Lanka and the Indian Ocean, built with **Next.js (App Router), TypeScript, Tailwind CSS, Framer Motion, and MySQL.  
 It features curated destinations, an elegant hero with a scroll cue, a membership benefits section, testimonials loaded from a database via API routes, an enquiry form, responsive navigation, and a polished dark aesthetic.
 
-> Live Demo: 
-> Figma: _[add your Figma link here_  ](https://www.figma.com/design/3HQX6O6g3AWB1PADqxF2Q9/ceylon-travelex?node-id=0-1&t=4tSPnHA7qQTteHVs-1)
-> GitHub: 
+> Live Demo: https://ceylon-travelex-9yo6.vercel.app/
+> Figma: (https://www.figma.com/design/3HQX6O6g3AWB1PADqxF2Q9/ceylon-travelex?node-id=0-1&t=4tSPnHA7qQTteHVs-1)
+> GitHub: https://github.com/RasaKWijesuriya/Ceylon-Travelex.git
 
 ---
 
